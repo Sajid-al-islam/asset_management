@@ -119,7 +119,10 @@ Route::group(
             Route::group(['prefix' => 'user'], function () {
                 Route::post('/update-profile', 'Auth\ProfileController@update_profile');
                 Route::get('/index', 'Auth\ProfileController@index');
+                Route::get('/user_roles', 'Auth\ProfileController@user_roles');
+                Route::get('/get_users', 'Auth\ProfileController@get_users');
                 Route::get('/admins', 'Auth\ProfileController@get_admins');
+                Route::post('/create', 'Auth\ProfileController@create');
             });
 
             Route::group(['prefix' => 'question-bank'], function () {

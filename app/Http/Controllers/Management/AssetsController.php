@@ -10,6 +10,7 @@ use App\Models\AssetSpecification;
 use App\Models\AssetSubCategory;
 use App\Models\LostAsset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -21,20 +22,43 @@ class AssetsController extends Controller
     public function index(Request $request)
     {
         $query = Assets::where('status', 1);
-        if ($request->has('key') && strlen($request->key) > 0) {
-            $key = $request->key;
-            $query->where(function ($q) use ($key) {
-                $q->where('name', $key)
-                    ->orWhere('name', 'LIKE', '%' . $key . '%')
-                    ->orWhere('v_no', 'LIKE', '%' . $key . '%')
-                    ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
-                    ->orWhere('code', 'LIKE', '%' . $key . '%');
-            });
+        $user_role = auth()->user()->load(['roles']);
+
+        foreach ($user_role->roles as $key => $value) {
+            if($value->name == "super_admin") {
+                if ($request->has('key') && strlen($request->key) > 0) {
+                    $key = $request->key;
+                    $query->where(function ($q) use ($key) {
+                        $q->where('name', $key)
+                            ->orWhere('name', 'LIKE', '%' . $key . '%')
+                            ->orWhere('v_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('code', 'LIKE', '%' . $key . '%');
+                    });
+                }
+                $assets = $query->paginate(8);
+                return response()->json([
+                    'assets' => $assets
+                ]);
+            }else {
+                if ($request->has('key') && strlen($request->key) > 0) {
+                    $key = $request->key;
+                    $query->where(function ($q) use ($key) {
+                        $q->where('name', $key)
+                            ->orWhere('name', 'LIKE', '%' . $key . '%')
+                            ->orWhere('v_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('code', 'LIKE', '%' . $key . '%');
+                    })->where('created_by', auth()->user()->id);
+                }
+                $assets = $query->paginate(8);
+                return response()->json([
+                    'assets' => $assets
+                ]);
+            }
         }
-        $assets = $query->paginate(8);
-        return response()->json([
-            'assets' => $assets
-        ]);
+
+        
     }
 
     public function dashboard_stats() {

@@ -7,7 +7,7 @@
         </h5>
         <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3" style="width:280px;">
             <div class="dt-buttons">
-              <router-link :to="{name:'assetLocationCreate'}">
+              <router-link :to="{name:'userCreate'}">
                 <button class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
                     <span><i class="ti ti-plus me-md-1"></i><span class="d-md-inline-block d-none">Create User</span></span>
                 </button>
@@ -22,7 +22,7 @@
                       <th>SL</th>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Role</th>
+                      <th>Roles</th>
                       <th>Created at</th>
                       <th>Actions</th>
                   </tr>
@@ -32,17 +32,21 @@
                       <td class="sorting_1"><a href=""><strong>#{{ index+1 }}</strong></a></td>
                       <td>
                         <a href="#" class="text-body text-truncate">
-                          <span class="fw-semibold">{{ user.name }}</span>
+                          <span class="fw-semibold">{{ user.first_name }} {{ user.last_name }}</span>
                         </a>
                       </td>
                       <td>
                         <a href="#" class="text-body text-truncate">
-                          <span class="fw-semibold">{{ user.address }}</span>
+                          <span class="fw-semibold">{{ user.email }}</span>
                         </a>
                       </td>
                       <td>
                         <a href="#" class="text-body text-truncate">
-                          <span class="fw-semibold">{{ user.mobile_number }}</span>
+                          <span class="fw-semibold" v-if="user.roles">
+                            <ul class="list-group list-group-timeline">
+                                <li v-for="(role, index) in user.roles" :key="index" class="list-group-item list-group-timeline-primary">{{ role.name }}</li>
+                            </ul>
+                          </span>
                         </a>
                       </td>
                       <td>
@@ -68,7 +72,7 @@
           </table>
       </div>
       <div class="card-footer pt-4">
-          <pagination :data="get_user_data" :limit="10" :size="'small'" :show-disabled="true" :align="'center'" @pagination-change-page="fetch_user_all">
+          <pagination :data="get_user_data" :limit="10" :size="'small'" :show-disabled="true" :align="'center'" @pagination-change-page="fetch_user_paginate">
               <span slot="prev-nav"><i class="fa fa-angle-left"></i> Previous</span>
               <span slot="next-nav">Next <i class="fa fa-angle-right"></i></span>
           </pagination>
@@ -88,12 +92,12 @@ export default {
       }
     },
   methods: {
-    ...mapActions(['fetch_user_all']),
+    ...mapActions(['fetch_user_paginate']),
     ...mapMutations([]),
     remove: async function(location) {
       
       await window.c_alert() &&
-      axios.post('/location/delete', {
+      axios.post('/user/delete', {
         id: location.id
         }).then((response) => {
             window.s_alert('success', response.data.message);
@@ -109,7 +113,7 @@ export default {
     ...mapGetters(['get_user_data'])
   },
   created: async function()  {
-    await this.fetch_user_all();
+    await this.fetch_user_paginate();
     // console.log(this.categories);
   },
 }

@@ -24,6 +24,17 @@ class ProfileController extends Controller
             "users" => $users
         ]);
     }
+    public function get_users(Request $request)
+    {
+        if($request->has('all')) {
+            $users = User::with('roles')->get();
+        }
+        else {
+            $users = User::with('roles')->paginate(8);
+        }
+
+        return response()->json(['users' => $users]);
+    }
 
     public function get_admins()
     {
@@ -31,6 +42,43 @@ class ProfileController extends Controller
         $admins = $user_role->users()->get()->toArray();
         return response()->json([
             "admins" => $admins
+        ]);
+    }
+
+    public function user_roles()
+    {
+        $user_roles = UserRole::get();
+        return response()->json([
+            "user_roles" => $user_roles
+        ]);
+    }
+
+    public function create(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'email' => ['required', 'email', 'unique:users'],
+            'mobile_number' => ['required', 'unique:users'],
+            'password' => ['required', 'min:8'],
+        ]); 
+
+        if ($validator->fails()) {
+            return response()->json([
+                'err_message' => 'validation error',
+                'data' => $validator->errors(),
+            ], 422);
+        }
+
+        $user = new User();
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->mobile_number = $request->mobile_number;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            "message" => "User Created successfully"
         ]);
     }
 

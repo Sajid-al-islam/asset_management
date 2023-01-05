@@ -4,6 +4,7 @@ import axios from 'axios';
 const state = {
     data: {},
     single_data: {},
+    user_roles: {},
     asset: []
 }
 
@@ -12,6 +13,7 @@ const getters = {
     get_user_data: state => state.data,
     // get_asset: state => state.asset,
     get_user_single_data: state => state.single_data,
+    get_user_roles: state => state.user_roles
 }
 
 // actions
@@ -22,16 +24,22 @@ const actions = {
             this.commit('set_user', res.data.users);
         })
     },
+    fetch_user_paginate: async function(state, page=1) {
+        await axios.get('/user/get_users?page='+page)
+        .then((res) => {
+            this.commit('set_user', res.data.users);
+        })
+    },
+    fetch_user_roles: async function(state) {
+        await axios.get('/user/user_roles')
+        .then((res) => {
+            this.commit('set_user_roles', res.data.user_roles);
+        })
+    },
     fetch_users_admin: async function(state) {
         await axios.get('/user/admins')
         .then((res) => {
             this.commit('set_user', res.data.admins);
-        })
-    },
-    fetch_user_paginate: async function(state, page=1) {
-        await axios.get('/user/index?page='+page)
-        .then((res) => {
-            this.commit('set_user', res.data.users);
         })
     },
     // fetch_user_products: async function(state, data) {
@@ -96,6 +104,9 @@ const mutations = {
     set_user_single: function(state, data) {
         state.single_data = data;
     },
+    set_user_roles: function (state, data) {
+        state.user_roles = data;
+    }
     // set_asset: function(state, data) {
     //     state.asset = data;
     // }
