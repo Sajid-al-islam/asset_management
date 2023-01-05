@@ -1,0 +1,137 @@
+@import "./variables";
+
+.custom_scroll {
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: $light_dark;
+        border-radius: 25px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: $purple;
+    }
+}
+
+.content-body {
+    // border: 1px solid;
+    min-height: calc(100vh - 230px);
+    max-height: calc(100vh - 230px);
+    overflow-y: scroll;
+    padding-right: 5px;
+    @extend .custom_scroll;
+}
+
+.vertical-layout.vertical-menu-modern .main-menu .navigation li a:hover {
+    background-color: rgba(67, 89, 113, .3);
+}
+
+.swal2-title {
+    color: white !important;
+}
+
+.swal2-popup {
+    background-color: $light_dark !important;
+}
+
+.swal2-timer-progress-bar {
+    background-color: var(--bs-primary) !important;
+}
+
+.dark-layout .select2-container .select2-selection--multiple .select2-selection__choice .select2-selection__choice__remove span {
+    display: none;
+}
+
+.dark-layout .select2-container .select2-selection--multiple .select2-selection__choice__remove:before {
+    top: 3px;
+    left: -5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent !important;
+    left: 0px;
+    height: 100%;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: white;
+}
+
+ul li, ol li {
+    list-style-type: none;
+}
+#basicModal {
+    backdrop-filter: blur(5px);
+    background-color: #28304685;
+    .modal-dialog{
+        box-shadow: 0 0.31rem 1.25rem 0 rgb(115 103 240 / 49%);
+    }
+}
+.cursor_pointer {
+    cursor: pointer;
+}
+@media print {
+    #print_body {
+        position: fixed;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        z-index: 9999;
+        box-shadow: none;
+    }
+    .watch {
+        display: none !important;
+    }
+    .quote_img {
+        display: none !important;
+    }
+    .signature_div {
+        display: flex !important;
+    }
+    .price_change_history {
+        display: none !important;
+    }
+    .spec {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    .divider {
+        margin: 0px !important;
+    }
+    .card-body {
+        padding-top: 10px !important;
+    }
+    .signature_single_form {
+        margin-top: 30px !important;
+    }
+}
+.preloader {
+    &.active {
+        display: block;
+    }
+    background: url("/loading.gif"), rgba(0, 0, 0, 0.452);
+    backdrop-filter: blur(10px);
+    background-repeat: no-repeat;
+    z-index: 9999;
+    background-position: center;
+    background-size: 70px;
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
