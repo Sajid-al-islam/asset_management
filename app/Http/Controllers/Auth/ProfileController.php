@@ -27,10 +27,10 @@ class ProfileController extends Controller
     public function get_users(Request $request)
     {
         if($request->has('all')) {
-            $users = User::with('roles')->get();
+            $users = User::where('status', 1)->with('roles')->get();
         }
         else {
-            $users = User::with('roles')->paginate(8);
+            $users = User::where('status', 1)->with('roles')->paginate(8);
         }
 
         return response()->json(['users' => $users]);
@@ -80,6 +80,27 @@ class ProfileController extends Controller
         return response()->json([
             "message" => "User Created successfully"
         ]);
+    }
+    
+    public function delete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'err_message' => 'validation error',
+                'data' => $validator->errors(),
+            ], 422);
+        }
+        $asset = User::find($request->id);
+        $asset->status = 0;
+        $asset->update();
+
+        return response()->json([
+            "message" => "User deleted successfully"
+        ], 200); 
     }
 
     public function update_profile(Request $request)

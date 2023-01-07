@@ -49,7 +49,7 @@ class AssetsController extends Controller
                             ->orWhere('v_no', 'LIKE', '%' . $key . '%')
                             ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
-                    })->where('created_by', auth()->user()->id);
+                    })->where('creator', auth()->user()->id);
                 }
                 $assets = $query->paginate(8);
                 return response()->json([

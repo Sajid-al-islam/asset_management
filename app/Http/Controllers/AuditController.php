@@ -36,15 +36,13 @@ class AuditController extends Controller
 
     public function audited(Request $request)
     {
-
-        // $audit_id = Audit::where('id', $request->id)->select('id', 'title')->first();
-        // $audited_assets = AuditAssets::where('audit_id', $audit_id->id)->with('assets')->get();
-        // $audit_asset_ids = AuditAssets::where('audit_id', $audit_id->id)->with('assets')->pluck('asset_id');
-        // $audit_assets = Assets::where('status', 1)->whereIn('id', $audit_asset_ids)->paginate(8);
+        
         $audit = Audit::where('id', $request->id)->select('id', 'title')
         ->with(['audit_assets'=>  function ($q)
         {
-            return $q->with("assets");
+            return $q->with(["assets" => function($q2) {
+                return $q2->where('creator', auth()->user()->id);
+            }]);
         }])
         ->first();
         
@@ -56,7 +54,9 @@ class AuditController extends Controller
         $audit_id = Audit::where('id', $request->id)->select('id', 'title')->first();
         
         $audit_asset_ids = AuditAssets::where('audit_id', $audit_id->id)->pluck('asset_id');
-        $audit_assets = Assets::where('status', 1)->whereNotIn('id', $audit_asset_ids)->paginate(8);
+        $audit_assets = Assets::where('status', 1)
+        ->where('creator', auth()->user()->id)
+        ->whereNotIn('id', $audit_asset_ids)->paginate(8);
         
         
         return response()->json(['audit_assets' => $audit_assets]);
@@ -113,6 +113,7 @@ class AuditController extends Controller
         $audit->description = $request->description;
         $audit->assign_to = $request->assign_to;
         $audit->start_date = $request->start_date;
+        $audit->creator = auth()->user()->id;
         $audit->end_date = $request->end_date;
         $audit->save();
 
@@ -144,6 +145,7 @@ class AuditController extends Controller
         $audit->description = $request->description;
         $audit->assign_to = $request->assign_to;
         $audit->start_date = $request->start_date;
+        $audit->creator = auth()->user()->id;
         $audit->end_date = $request->end_date;
         $audit->update();
 

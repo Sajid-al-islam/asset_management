@@ -123,6 +123,7 @@ Route::group(
                 Route::get('/get_users', 'Auth\ProfileController@get_users');
                 Route::get('/admins', 'Auth\ProfileController@get_admins');
                 Route::post('/create', 'Auth\ProfileController@create');
+                Route::post('/delete', 'Auth\ProfileController@delete');
             });
 
             Route::group(['prefix' => 'question-bank'], function () {

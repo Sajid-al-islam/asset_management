@@ -94,15 +94,15 @@ export default {
   methods: {
     ...mapActions(['fetch_user_paginate']),
     ...mapMutations([]),
-    remove: async function(location) {
+    remove: async function(user) {
       
       await window.c_alert() &&
       axios.post('/user/delete', {
-        id: location.id
+        id: user.id
         }).then((response) => {
             window.s_alert('success', response.data.message);
             // this.mssg = response.data.message
-            this.fetch_asset_location_paginate();
+            this.fetch_user_paginate();
         })
         .catch((e) => {
             console.log(e);

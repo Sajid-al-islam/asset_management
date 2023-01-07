@@ -120,8 +120,9 @@
                     </li>
                 </ul>
             </li>
-
-            <li class="nav-item has-sub" >
+        
+                
+            <li v-if="is_admin" class="nav-item has-sub" >
                 <a class="d-flex align-items-center" href="#">
                     <i data-feather="users"></i>
                     <span class="menu-title text-truncate" data-i18n="User">User Management</span>
@@ -141,6 +142,8 @@
                     </li>
                 </ul>
             </li>
+            
+            
 
             <li class="nav-item has-sub" >
                 <a class="d-flex align-items-center" href="#">
@@ -175,8 +178,6 @@
                 </ul>
             </li>
 
-            
-
             <li class="nav-item">
                 <a class="d-flex align-items-center" href="javascript:void(0)" @click="backup()">
                     <i data-feather="download-cloud"></i>
@@ -195,11 +196,18 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import NavTimeLeftWatch from "./NavTimeLeftWatch.vue";
 
 export default{
+    data() {
+        return {
+            user: ''
+        }
+    },
     components: { NavTimeLeftWatch },
     methods: {
+        ...mapActions(['fetch_auth_information']),
         logout() {
             axios.post('/user/api-logout', {
             }).then((response) => {
@@ -224,6 +232,17 @@ export default{
             });
         }
     },
+    created: function()  {
+        this.fetch_auth_information();
+    },
+    computed: {
+        ...mapGetters(['get_auth_information']),
+        
+        is_admin: function() {
+           return this.get_auth_information.roles?.find(element => element.name == 'super_admin')
+        }
+        
+    }
 }
 </script>
 
