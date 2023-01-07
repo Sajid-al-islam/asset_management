@@ -235,6 +235,15 @@ export default{
     created: function()  {
         this.fetch_auth_information();
     },
+    watch: {
+        is_admin(val) {
+            setTimeout(() => {
+                if (feather) {
+                    feather.replace({ width: 14, height: 14 });
+                }
+            }, 1000);
+        }
+    },
     computed: {
         ...mapGetters(['get_auth_information']),
         
