@@ -54,7 +54,7 @@ const actions = {
     edit_asset: async function(state, data) {
         // console.log(formData);
         let res = await axios.post('/asset/update', data.formData);
-        state.dispatch('fetch_asset_all');
+        // state.dispatch('fetch_asset_all');
         
         return res 
     },

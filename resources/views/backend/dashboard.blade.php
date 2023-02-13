@@ -58,8 +58,7 @@
         window.s_alert = (icon="success", title="success") => {
             return Toast.fire({
                 icon,
-                title,
-                iconColor: icon,
+                title
             })
         };
 
@@ -94,7 +93,7 @@
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static"
     data-open="click" data-menu="vertical-menu-modern" data-col="">
-    <div class="preloader">
+    <div class="preloader loader_body">
         
     </div>
     <div id="app">

@@ -36,8 +36,8 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username"><h5>Sub Category</h5></label>
-                        <select id="select2Basic2" v-if="sub_category && sub_category.length" class="sub_category form-select" >
-                            <option v-for="(sub_category, index) in sub_category" :value="sub_category.id" :key="index">{{ sub_category.name }}</option>
+                        <select id="select2Basic2" v-if="selected_sub_cats && selected_sub_cats.length" class="sub_category form-select" >
+                            <option v-for="(sub_category, index) in selected_sub_cats" :value="sub_category.id" :key="index">{{ sub_category.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -212,6 +212,7 @@ export default {
             assets: '',
             category_id: '',
             sub_category_id: '',
+            selected_sub_cats: '',
             user: '',
             buy_location: '',
             id: '',
@@ -239,7 +240,7 @@ export default {
         await this.fetch_asset_single(this.id);
         await this.fetch_user_all();
         await this.fetch_asset_category_all();
-        await this.fetch_asset_sub_category_all();
+        // await this.fetch_asset_sub_category_all();
         await this.fetch_asset_location_all();
         await this.fetch_quotation_all();
         if(this.asset.is_lost == 1) {
@@ -277,20 +278,26 @@ export default {
             }).val(that.asset.designation_id).trigger('change');
         },
         get_asset_category_data: function (val) {
+            this.getSubCategory(this.get_asset_single_data.category_id);
+            // console.log(this.selected_sub_cats, this.get_asset_single_data.category_id, this.get_asset_single_data.sub_category_id);
             const that = this;
             setTimeout(() => {
-                that.category_id = that.get_asset_category_data[0].id
+                that.category_id = that.get_asset_single_data.category_id
                 $('.category').select2({});
-                $('.category').on('category:select', function (e) {
+                $('.category').on('select2:select', function (e) {
                     var data = e.params.data;
+                    // console.log(data);
                     that.category_id = data.id
-                }).val(that.asset.category_id).trigger('change');
+                    that.getSubCategory(data.id)
+                }).val(that.category_id).trigger('change');
             }, 500);
         },
         get_quotations: function (val) {
             const that = this;
             setTimeout(() => {
-                this.quotation = val[0].id
+                if(val[0]) {
+                    this.quotation = val[0].id
+                }
                 $('.quotation').off().select2({});
                 $('.quotation').on('select2:select', function (e) {
                     var data = e.params.data;
@@ -298,23 +305,37 @@ export default {
                 }).val(that.asset.cs_quotation_id).trigger('change');
             }, 500);
         },
-        get_asset_sub_category_data: function(val) {
-            const that = this;
-            setTimeout(() => {
-                that.sub_category_id = that.get_asset_sub_category_data[0].id
-
-                $('.sub_category').select2({});
-                $('.sub_category').on('sub_category:select', function (e) {
-                    var data = e.params.data;
-                    that.sub_category_id = data.id
-                }).val(that.asset.sub_category_id).trigger('change');
-            }, 500);
-        },
-        get_user_data: function (val) {
+        selected_sub_cats:function(val) {
+            this.sub_category_id = this.get_asset_single_data.sub_category_id
             const that = this;
             console.log(val);
             setTimeout(() => {
-                that.user = that.get_user_data[0].id
+                $('.sub_category').off().select2({});
+                $('.sub_category').on('select2:select', function (e) {
+                    var data = e.params.data;
+                    that.sub_category_id = data.id
+                }).val(that.sub_category_id).trigger('change');
+            }, 500);
+        },
+        // get_asset_sub_category_data: function(val) {
+        //     const that = this;
+        //     setTimeout(() => {
+        //         that.sub_category_id = that.get_asset_single_data.sub_category_id
+        //         $('.sub_category').select2({});
+        //         $('.sub_category').on('select2:select', function (e) {
+        //             var data = e.params.data;
+        //             that.sub_category_id = data.id
+        //             console.log(that.sub_category_id);
+        //         }).val(that.asset.sub_category_id).trigger('change');
+        //     }, 500);
+        // },
+        get_user_data: function (val) {
+            const that = this;
+            // console.log(val);
+            setTimeout(() => {
+                if(that.get_user_data[0]) {
+                    that.user = that.get_user_data[0].id
+                }
                 $('.users').off().select2({});
             }, 1000);
         },
@@ -331,6 +352,7 @@ export default {
             'fetch_user_all',
             'fetch_quotation_all'
         ]),
+        ...mapMutations([]),
         imageShow: function(e) {
             this.img_url = URL.createObjectURL(e.target.files[0]);
             this.asset_img = this.img_url;
@@ -343,7 +365,14 @@ export default {
             this.acceptance_img_url = URL.createObjectURL(e.target.files[0]);
             this.asset_acceptance_img = this.acceptance_img_url;
         },
-        ...mapMutations([]),
+        // Getting the dependent sub category
+        getSubCategory: async function(id) {
+            await axios.get('/asset/getSubCategory?category_id='+id)
+            .then((res) => {
+                this.selected_sub_cats = res.data;
+                // console.log(res.data);
+            })
+        },
         toggleStatus() {
             this.lost = !this.lost;
         },
@@ -409,11 +438,11 @@ export default {
         asset: function () {
             return this.get_asset_single_data
         },
-        sub_category: function () {
+        // sub_category: function () {
 
-            console.log(this.get_asset_sub_category_data);
-            return this.get_asset_sub_category_data
-        },
+        //     // console.log(this.get_asset_sub_category_data);
+        //     return this.get_asset_sub_category_data
+        // },
     },
 
 }
