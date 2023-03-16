@@ -113,6 +113,7 @@ Route::group(
                 Route::post('/update', 'Management\AssetsController@update');
                 Route::post('/delete', 'Management\AssetsController@delete');
                 Route::post('/destroy', 'Management\AssetsController@destroy');
+                Route::get('/report', 'Management\AssetsController@report');
             });
 
             // User routes

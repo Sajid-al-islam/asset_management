@@ -9,6 +9,7 @@ use App\Models\Assets;
 use App\Models\AssetSpecification;
 use App\Models\AssetSubCategory;
 use App\Models\LostAsset;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -36,7 +37,7 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     });
                 }
-                $assets = $query->paginate(8);
+                $assets = $query->with('user')->paginate(8);
                 return response()->json([
                     'assets' => $assets
                 ]);
@@ -51,7 +52,8 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     })->where('creator', auth()->user()->id);
                 }
-                $assets = $query->paginate(8);
+                $assets = $query->with('user')->paginate(8);
+
                 return response()->json([
                     'assets' => $assets
                 ]);
@@ -59,6 +61,55 @@ class AssetsController extends Controller
         }
 
         
+    }
+
+    public function report(Request $request)
+    {
+        $query = Assets::where('status', 1);
+        $user_role = auth()->user()->load(['roles']);
+
+
+        $asset_users = User::whereExists(function ($query) {
+            $query->from('assets')
+                ->whereColumn('assets.designation_id', 'users.id');
+        })->get(); 
+
+
+        foreach ($user_role->roles as $key => $value) {
+            if($value->name == "super_admin") {
+                if ($request->has('key') && strlen($request->key) > 0) {
+                    $key = $request->key;
+                    $query->where(function ($q) use ($key) {
+                        $q->where('name', $key)
+                            ->orWhere('name', 'LIKE', '%' . $key . '%')
+                            ->orWhere('v_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('code', 'LIKE', '%' . $key . '%');
+                    });
+                }
+                $assets = $query->paginate(8);
+                return response()->json([
+                    'assets' => $assets,
+                    'asset_users' => $asset_users
+                ]);
+            }else {
+                if ($request->has('key') && strlen($request->key) > 0) {
+                    $key = $request->key;
+                    $query->where(function ($q) use ($key) {
+                        $q->where('name', $key)
+                            ->orWhere('name', 'LIKE', '%' . $key . '%')
+                            ->orWhere('v_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
+                            ->orWhere('code', 'LIKE', '%' . $key . '%');
+                    })->where('creator', auth()->user()->id);
+                }
+                $assets = $query->paginate(8);
+                return response()->json([
+                    'assets' => $assets,
+                    'asset_users' => $asset_users 
+                ]);
+            }
+        }
     }
 
     public function dashboard_stats() {
@@ -366,6 +417,8 @@ class AssetsController extends Controller
             'asset' => $asset
         ]);
     }
+
+    
 
     public function delete(Request $request) {
         $validator = Validator::make($request->all(), [

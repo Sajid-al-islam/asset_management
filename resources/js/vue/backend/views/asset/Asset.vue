@@ -8,11 +8,11 @@
             </h5>
             <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
                 <div class="dt-buttons">
-                <router-link :to="{name:'assetCreate'}">
-                    <button class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-                        <span><i class="ti ti-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Asset</span></span>
-                    </button>
-                </router-link>
+                    <router-link :to="{name:'assetCreate'}">
+                        <button class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+                            <span><i class="ti ti-plus me-md-1"></i><span class="d-md-inline-block d-none">Add Asset</span></span>
+                        </button>
+                    </router-link>
                 </div>
             </div>
             <input type="text" class="form-control mt-3" v-model="search_value" @keyup="search()" id="defaultFormControlInput" placeholder="search..." aria-describedby="defaultFormControlHelp">

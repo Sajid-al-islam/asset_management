@@ -16,8 +16,14 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <router-link :to="{name:'Report'}" class="d-flex align-items-center" href="#">
+                    <i data-feather="activity"></i>
+                    <span class="menu-item text-truncate" data-i18n="Profile">Report</span>
+                </router-link>
+            </li>
             <li class="navigation-header">
-                <span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
+                <span data-i18n="Apps &amp; Pages">Pages</span>
                 <i data-feather="more-horizontal"></i>
             </li>
             <!-- <li class="nav-item">

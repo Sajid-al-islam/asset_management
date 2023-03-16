@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 // Login, Dashboard routes
 import Layout from '../views/Layout'
 import Dashboard from '../views/Dashboard'
+import Report from '../views/Report'
 import Login from '../views/auth/Login'
 
 // Profile routes
@@ -77,6 +78,11 @@ const routes = [{
                 path: '',
                 name: 'Dashboard',
                 component: Dashboard,
+            },
+            {
+                path: '/report',
+                name: 'Report',
+                component: Report,
             },
             {
                 path: 'setting',

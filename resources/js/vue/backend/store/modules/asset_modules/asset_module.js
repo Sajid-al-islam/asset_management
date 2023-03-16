@@ -51,6 +51,12 @@ const actions = {
         
         return res 
     },
+    fetch_report_asset: async function(state, page=1) {
+        await axios.get('/asset/report?page='+page)
+        .then((res) => {
+            this.commit('set_asset', res.data);
+        })
+    },
     edit_asset: async function(state, data) {
         // console.log(formData);
         let res = await axios.post('/asset/update', data.formData);
