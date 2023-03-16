@@ -18,9 +18,7 @@
                     <div class="col-md-6">
                         <div class="form-password-toggle">
                             <label class="form-label" for="multicol-confirm-password"><h5>Location</h5></label>
-                            <div class="input-group input-group-merge">
-                                <input name="location" type="text" class="form-control" placeholder="Eg: 2nd floor" />
-                            </div>
+                            <input name="location" id="multicol-username" type="text" class="form-control" placeholder="Eg: 2nd floor" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -47,6 +45,38 @@
                         <select id="select2Location"  class="buy_location form-select">
                             <option v-for="(location, index) in location_data" :value="location.id" :key="index">{{ location.name }}</option>
                         </select>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="mt-3">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">Buying location <i class="ms-2 fa fa-plus"></i></button>
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+                                    <div class="offcanvas-header">
+                                        <button type="button" class="btn-close text-reset" id="close_location_canvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body my-auto mx-0 flex-grow-0 border-1">
+                                        <h5>Add new buying location</h5>
+                                        <form @submit.prevent="addLocation($event.target)">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-default-fullname">Name</label>
+                                                <input type="text" name="name" class="form-control" id="basic-default-fullname" placeholder="Banani">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-default-fullname">Address</label>
+                                                <input type="text" name="address" class="form-control" id="basic-default-fullname" placeholder="Startech 2nd floor">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="basic-default-fullname">Mobile Number</label>
+                                                <input type="text" name="mobile_number" class="form-control" id="basic-default-fullname" placeholder="0175*******">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2 d-grid w-100">create</button>
+                                            <!-- <button type="submit" class="btn btn-primary waves-effect waves-light"></button> -->
+                                        </form>
+                                        
+                                        <button type="button" class="btn btn-label-secondary d-grid w-100" data-bs-dismiss="offcanvas">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <button type="button" @click="addLocation()" class="mt-2 btn btn-primary waves-effect waves-light">Add buying location<i class="ms-2 fa fa-plus"></i></button> -->
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username"><h5>Buying date</h5></label>
@@ -242,8 +272,8 @@ export default {
             'fetch_asset_sub_category_all', 
             'create_asset', 
             'fetch_asset_location_all',
-            // 'fetch_user_all',
-            'fetch_quotation_all'
+            'fetch_quotation_all',
+            'add_location_quick'
         ]),
         imageShow(e) {
             this.asset_img = e.target.files[0];
@@ -288,7 +318,15 @@ export default {
             window.s_alert('success',res.data.message);
             event.reset();
         },
-
+        addLocation: async function(event) {
+            let formData = new FormData(event);
+            let res = await this.add_location_quick(formData)
+            event.reset()
+            let ofcanvas_el = document.getElementById("offcanvasEnd"); 
+            let offcanvas = new bootstrap.Offcanvas(ofcanvas_el, {backdrop: true})
+            offcanvas.hide()
+            window.s_alert('success',res.data.message);
+        },
         // add specification
         addSpecification() {
             this.asset_specifications.push({

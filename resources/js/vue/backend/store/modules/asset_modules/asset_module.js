@@ -58,31 +58,13 @@ const actions = {
         
         return res 
     },
-
-    // create_asset_category: async function(state, category_name) {
-    //     await axios.post('/category/create?name='+category_name)
-    //     .then((res) => {
-    //         if(res.status == 200) {
-    //             return 'category_added';
-    //         }
-    //         this.fetch_asset_category_all
-    //     })
-    // },
-    // fetch_asset_category_all: function (state, id) {
-    //     axios.post('/assets/' + id)
-    //         .then((res) => {
-    //             this.commit('set_asset_category_single_data', res.data);
-    //         })
-    // },
-    // fetch_asset_category_all: function (state, id) {
-    //     axios.post('/assets/update/' + id)
-    //         .then((res) => {
-    //             this.commit('set_asset_category_update_single_data', {
-    //                 data: res.data,
-    //                 id
-    //             });
-    //         })
-    // },
+    add_location_quick: async function(state, formData) {
+        let res = await axios.post('/location/create', formData);
+        this.dispatch('fetch_asset_location_all');
+        
+        return res 
+    }
+    
 }
 
 // mutators
