@@ -18,7 +18,7 @@
                             <div class="d-flex justify-content-between">
                                 <div class="category_filter">
                                     <label for="defaultSelect" class="form-label">Categories</label>
-                                    <select id="select2Basic"  class="category form-select">
+                                    <select id="select2Basic" @change="categoryFilter($event.target.value)" class="category form-select">
                                         <option v-for="(category, index) in get_asset_category_data" :value="category.id" :key="index">{{ category.name }}</option>
                                     </select>
                                 </div>
@@ -134,7 +134,9 @@ export default {
             'fetch_report_asset',
             'fetch_asset_category_all', 
             'fetch_asset_sub_category_all', 
-            'search_asset'
+            'search_asset',
+            'filter_asset_product',
+            'fetch_category_products'
         ]),
         ...mapMutations([]),
         search: async function() {
@@ -143,6 +145,14 @@ export default {
                 page: 1
             }
             await this.search_asset(data)
+        },
+        categoryFilter: async function(category_id) {
+            console.log("working", category_id);
+            let data =  {
+                id: category_id,
+                is_product: 'yes'
+            }
+            await this.fetch_category_products(data);
         },
         remove: async function(asset) {
         
