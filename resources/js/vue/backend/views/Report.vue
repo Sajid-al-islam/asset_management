@@ -11,52 +11,54 @@
                             <h5 class="card-title mb-0">Asset Reports Filter</h5>
                         </div>
                         
+                        <button class="btn btn-sm btn-primary" @click="exportCSV()">Export to csv</button>
+                        
                     </div>
                     
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <div class="filter-area mb-4">
                             <div class="d-flex justify-content-between">
                                 <div class="category_filter">
                                     <label for="defaultSelect" class="form-label">Categories</label>
-                                    <select id="select2Basic" @change="categoryFilter($event.target.value)" class="category form-select">
+                                    <select id="select2Basic" v-model="filter.category_id" @change="filterAsset()" class="category form-select">
                                         <option v-for="(category, index) in get_asset_category_data" :value="category.id" :key="index">{{ category.name }}</option>
                                     </select>
                                 </div>
     
                                 <div class="sub_category_filter">
                                     <label for="defaultSelect" class="form-label">Sub Categories</label>
-                                    <select id="defaultSelect" class="form-select">
+                                    <select id="defaultSelect" v-model="filter.subcategory_id" @change="filterAsset()" class="form-select">
                                         <option v-for="(sub_category, index) in get_asset_sub_category_data" :value="sub_category.id" :key="index">{{ sub_category.name }}</option>
                                     </select>
                                 </div>
 
                                 <div class="sub_category_filter">
                                     <label for="defaultSelect" class="form-label">Status</label>
-                                    <select id="defaultSelect" class="form-select">
-                                        <option value="0">Lost</option>
-                                        <option value="1">Available</option>
+                                    <select id="defaultSelect" v-model="filter.status" @change="filterAsset()" class="form-select">
+                                        <option value="1">Lost</option>
+                                        <option value="0">Available</option>
                                     </select>
                                 </div>
 
                                 <div class="sub_category_filter">
                                     <label for="defaultSelect" class="form-label">User</label>
-                                    <select id="defaultSelect" class="form-select">
+                                    <select id="defaultSelect" v-model="filter.user_id" @change="filterAsset()" class="form-select">
                                         <option v-for="(user, index) in get_asset_data.asset_users" :value="user.id" :key="index">{{ user.first_name }} {{ user.last_name }}</option>
                                     </select>
                                 </div>
     
                                 <div class="from_date_filter">
                                     <label for="defaultSelect" class="form-label">From date</label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" v-model="filter.from_date" @change="filterAsset()" class="form-control">
                                 </div>
 
                                 <div class="to_date_filter">
                                     <label for="defaultSelect" class="form-label">To date</label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" v-model="filter.to_date" @change="filterAsset()" class="form-control">
                                 </div>
 
                                 <div class="filter_btn row align-items-center mt-3">
-                                    <button class="btn btn-sm btn-primary">apply filter</button>
+                                    <button class="btn btn-sm btn-primary" @click="filterAsset()">apply filter</button>
                                 </div>
                             </div>
                         </div>
@@ -65,11 +67,14 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
+                                    <th>Purchase Date</th>
                                     <th>Name</th>
                                     <th>price</th>
                                     <th>current value</th>
                                     <th>V no</th>
                                     <th>SV no</th>
+                                    <th>Location of asset</th>
+                                    <th>Name of user</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -77,13 +82,16 @@
                             <tbody v-if="get_asset_data.assets" class="table-border-bottom-0">
                                 <tr v-for="(asset, index) in get_asset_data.assets.data" :key="index">
                                     <td><strong style="color: #7367f0;">#{{ index+1 }}</strong></td>
+                                    <td>{{ asset.buying_date }}</td>
                                     <td>
                                         <span class="fw-semibold">{{ asset.name }}</span>
                                     </td>
                                     <td>{{ asset.price }}</td>
-                                    <td>{{ asset.current_value }}</td>
+                                    <td>{{ asset.depreciated_price }}</td>
                                     <td>{{ asset.v_no }}</td>
                                     <td>{{ asset.sv_no }}</td>
+                                    <td>{{ asset.location }}</td>
+                                    <td>{{ asset.user.first_name }} {{ asset.user.last_name }}</td>
                                     <td>
                                         <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
                                         <span v-else class="badge bg-label-danger me-1">Lost</span>
@@ -125,18 +133,35 @@ export default {
     data() {
         return {
             assets: '',
-            search_value: ''
+            search_value: '',
+            filter: {
+                category_id: '',
+                subcategory_id: '',
+                status: '',
+                user_id: '',
+                from_date: '',
+                to_date: '',
+            }
         }
     },
-    
+    watch: {
+        filter: {
+            handler: async function(newValue, oldValue) {
+                this.filter.subcategory_id = ''
+                await this.fetch_subcategory_by_category(newValue.category_id);
+            },
+            deep: true,
+        },
+    },
     methods: {
         ...mapActions([
             'fetch_report_asset',
             'fetch_asset_category_all', 
             'fetch_asset_sub_category_all', 
             'search_asset',
-            'filter_asset_product',
-            'fetch_category_products'
+            'filter_report_asset',
+            'fetch_subcategory_by_category',
+            'export_asset_all'
         ]),
         ...mapMutations([]),
         search: async function() {
@@ -146,27 +171,39 @@ export default {
             }
             await this.search_asset(data)
         },
-        categoryFilter: async function(category_id) {
-            console.log("working", category_id);
-            let data =  {
-                id: category_id,
-                is_product: 'yes'
-            }
-            await this.fetch_category_products(data);
-        },
         remove: async function(asset) {
-        
-        await window.c_alert() &&
-        axios.post('/asset/delete', {
-            id: asset.id
-            }).then((response) => {
-                window.s_alert('success', response.data.message);
-                // this.mssg = response.data.message
-                this.fetch_report_asset();
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+            await window.c_alert() &&
+            axios.post('/asset/delete', {
+                id: asset.id
+                }).then((response) => {
+                    window.s_alert('success', response.data.message);
+                    // this.mssg = response.data.message
+                    this.fetch_report_asset();
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        },
+        exportCSV: async function() {
+            await this.export_asset_all();
+        },
+        filterAsset: async function() {
+            let isEmpty = Object.values(this.filter).every(x => x === null || x === '')
+            if(isEmpty) {
+                window.s_alert('warning', "Select at lest one field to apply filter");
+            }else {
+                let data =  {
+                    category_id: this.filter.category_id,
+                    subcategory_id: this.filter.subcategory_id,
+                    status: this.filter.status,
+                    user_id: this.filter.user_id,
+                    from_date: this.filter.from_date,
+                    to_date: this.filter.to_date,
+                    page: 1
+                }
+                await this.filter_report_asset(data);
+                console.log(this.get_asset_data);
+            }
         }
     },
     computed: {
@@ -179,10 +216,9 @@ export default {
     created: async function()  {
         await this.fetch_report_asset();
         await this.fetch_asset_category_all();
-        await this.fetch_asset_sub_category_all(); 
-        console.log(this.get_asset_data);
+        await this.fetch_asset_sub_category_all();
     },
-    }
+}
 </script>
 
 <style>

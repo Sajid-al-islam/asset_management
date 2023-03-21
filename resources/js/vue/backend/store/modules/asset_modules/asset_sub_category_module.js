@@ -20,6 +20,12 @@ const actions = {
             this.commit('set_asset_sub_category', res.data.sub_categories);
         })
     },
+    fetch_subcategory_by_category: async function(state, id) {
+        await axios.get('/asset/getSubCategory?category_id='+id)
+        .then((res) => {
+            this.commit('set_asset_sub_category', res.data);
+        })
+    },
     fetch_asset_sub_category_all: async function(state) {
         await axios.get('/sub_category/index?all')
         .then((res) => {

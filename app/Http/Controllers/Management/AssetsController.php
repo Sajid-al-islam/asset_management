@@ -10,6 +10,7 @@ use App\Models\AssetSpecification;
 use App\Models\AssetSubCategory;
 use App\Models\LostAsset;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -87,7 +88,7 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     });
                 }
-                $assets = $query->paginate(8);
+                $assets = $query->with('user')->paginate(8);
                 return response()->json([
                     'assets' => $assets,
                     'asset_users' => $asset_users
@@ -103,13 +104,66 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     })->where('creator', auth()->user()->id);
                 }
-                $assets = $query->paginate(8);
+                $assets = $query->with('user')->paginate(8);
                 return response()->json([
                     'assets' => $assets,
                     'asset_users' => $asset_users 
                 ]);
             }
         }
+    }
+
+    public function report_filter(Request $request)
+    {
+        // dd($request->all());
+        $asset_users = User::whereExists(function ($query) {
+            $query->from('assets')
+                ->whereColumn('assets.designation_id', 'users.id');
+        })->get();
+        $category_id = $request->category_id;
+        $sub_category_id = $request->subcategory_id;
+        $lost_status = (int) $request->status;
+        $user_id = $request->user_id;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
+
+        $query = Assets::where('status', 1);
+        if ($request->has('key') && strlen($request->key) > 0) {
+            $key = $request->key;
+            $query->where(function ($q) use ($key) {
+                $q->where('name', $key)
+                    ->orWhere('name', 'LIKE', '%' . $key . '%')
+                    ->orWhere('v_no', 'LIKE', '%' . $key . '%')
+                    ->orWhere('sv_no', 'LIKE', '%' . $key . '%')
+                    ->orWhere('code', 'LIKE', '%' . $key . '%');
+            });
+        }
+
+        if($category_id) {
+            $assets = $query->where('category_id', $category_id)->with('user')->paginate(8);
+        }
+        if($sub_category_id) {
+            $assets = $query->where('sub_category_id', $sub_category_id)->with('user')->paginate(8);
+        }
+        if($lost_status) {
+            $assets = $query->where('is_lost', $lost_status)->with('user')->paginate(8);
+        }
+        if($from_date) {
+            $assets = $query->whereBetween('buying_date', [$from_date, Carbon::now()])->with('user')->paginate(8);
+        }
+        if($from_date && $to_date) {
+            $assets = $query->whereBetween('buying_date', [$from_date, $to_date])->with('user')->paginate(8);
+        }
+        if($user_id) {
+            $assets = $query->where('designation_id', $user_id)->with('user')->paginate(8);
+        }
+        $assets = $query->with('user')->paginate(8);
+        return response()->json([
+            'assets' => $assets,
+            'asset_users' => $asset_users
+        ]);
+        
     }
 
     public function dashboard_stats() {

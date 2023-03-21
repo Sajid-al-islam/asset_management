@@ -345,7 +345,6 @@ export default {
             await axios.get('/asset/getSubCategory?category_id='+id)
             .then((res) => {
                 this.selected_sub_cats = res.data;
-                console.log(res.data);
             })
         }
     },

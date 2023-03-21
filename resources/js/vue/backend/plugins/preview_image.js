@@ -10,3 +10,5 @@ window.init_preview_image = () =>{
         }
     })
 }
+
+

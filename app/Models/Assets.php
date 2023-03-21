@@ -57,7 +57,7 @@ class Assets extends Model
 
     public function user()
     {
-        return $this->hasMany(User::class, 'id','designation_id');
+        return $this->hasOne(User::class, 'id','designation_id');
     }
 
     public function getUpdatedCurrentValueAttribute() {

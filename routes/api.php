@@ -114,6 +114,7 @@ Route::group(
                 Route::post('/delete', 'Management\AssetsController@delete');
                 Route::post('/destroy', 'Management\AssetsController@destroy');
                 Route::get('/report', 'Management\AssetsController@report');
+                Route::post('/report_filter', 'Management\AssetsController@report_filter');
             });
 
             // User routes

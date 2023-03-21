@@ -57,6 +57,31 @@ const actions = {
             this.commit('set_asset', res.data);
         })
     },
+    filter_report_asset: async function(state, data) {
+        await axios.post('/asset/report_filter', data)
+        .then((res) => {
+            this.commit('set_asset', res.data);
+        })
+    },
+    export_asset_all: async function ({state}) {
+        let col = Object.keys(state.data.assets.data[0]);
+        // console.log(col, state.data.assets);
+        var export_csv = new window.CsvBuilder(`assets_list.csv`).setColumns(col);
+        window.start_loader();
+        let last_page = state.data.assets.last_page;
+        for (let index = 1; index <= last_page; index++) {
+            state.page = index;
+            state.paginate = 10;
+            await this.dispatch(`fetch_asset_all`);
+            let values = state.data.data.map((i) => Object.values(i));
+            export_csv.addRows(values);
+
+            let progress = Math.round(100*index/last_page);
+            window.update_loader(progress);
+        }
+        await export_csv.exportFile();
+        window.remove_loader();
+    },
     edit_asset: async function(state, data) {
         // console.log(formData);
         let res = await axios.post('/asset/update', data.formData);
