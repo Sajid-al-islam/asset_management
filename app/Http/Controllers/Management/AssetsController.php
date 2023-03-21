@@ -88,7 +88,7 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     });
                 }
-                $assets = $query->with('user')->paginate(8);
+                $assets = $query->with(['user', 'buy_location'])->paginate(8);
                 return response()->json([
                     'assets' => $assets,
                     'asset_users' => $asset_users
@@ -104,7 +104,7 @@ class AssetsController extends Controller
                             ->orWhere('code', 'LIKE', '%' . $key . '%');
                     })->where('creator', auth()->user()->id);
                 }
-                $assets = $query->with('user')->paginate(8);
+                $assets = $query->with(['user', 'buy_location'])->paginate(8);
                 return response()->json([
                     'assets' => $assets,
                     'asset_users' => $asset_users 
@@ -141,24 +141,24 @@ class AssetsController extends Controller
         }
 
         if($category_id) {
-            $assets = $query->where('category_id', $category_id)->with('user')->paginate(8);
+            $assets = $query->where('category_id', $category_id)->with(['user', 'buy_location'])->paginate(8);
         }
         if($sub_category_id) {
-            $assets = $query->where('sub_category_id', $sub_category_id)->with('user')->paginate(8);
+            $assets = $query->where('sub_category_id', $sub_category_id)->with(['user', 'buy_location'])->paginate(8);
         }
         if($lost_status) {
-            $assets = $query->where('is_lost', $lost_status)->with('user')->paginate(8);
+            $assets = $query->where('is_lost', $lost_status)->with(['user', 'buy_location'])->paginate(8);
         }
         if($from_date) {
-            $assets = $query->whereBetween('buying_date', [$from_date, Carbon::now()])->with('user')->paginate(8);
+            $assets = $query->whereBetween('buying_date', [$from_date, Carbon::now()])->with(['user', 'buy_location'])->paginate(8);
         }
         if($from_date && $to_date) {
-            $assets = $query->whereBetween('buying_date', [$from_date, $to_date])->with('user')->paginate(8);
+            $assets = $query->whereBetween('buying_date', [$from_date, $to_date])->with(['user', 'buy_location'])->paginate(8);
         }
         if($user_id) {
-            $assets = $query->where('designation_id', $user_id)->with('user')->paginate(8);
+            $assets = $query->where('designation_id', $user_id)->with(['user', 'buy_location'])->paginate(8);
         }
-        $assets = $query->with('user')->paginate(8);
+        $assets = $query->with(['user', 'buy_location'])->paginate(8);
         return response()->json([
             'assets' => $assets,
             'asset_users' => $asset_users

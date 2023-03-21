@@ -69,6 +69,7 @@
                                     <th>SL</th>
                                     <th>Purchase Date</th>
                                     <th>Name</th>
+                                    <th>Buying shop</th>
                                     <th>price</th>
                                     <th>current value</th>
                                     <th>V no</th>
@@ -86,6 +87,8 @@
                                     <td>
                                         <span class="fw-semibold">{{ asset.name }}</span>
                                     </td>
+                                    <td v-if="asset.buy_location">{{ asset.buy_location.name }}</td>
+                                    <td v-else></td>
                                     <td>{{ asset.price }}</td>
                                     <td>{{ asset.depreciated_price }}</td>
                                     <td>{{ asset.v_no }}</td>
