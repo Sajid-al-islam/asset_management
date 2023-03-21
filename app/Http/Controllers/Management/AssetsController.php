@@ -187,6 +187,17 @@ class AssetsController extends Controller
         ]);
     }
 
+    public function category_wise_stats()
+    {
+        
+        $category_wise_asset = AssetCategory::withCount('assets')
+        ->withSum('assets', 'price')
+        ->with('assets')->get();
+        return response()->json([
+            "category_wise_asset" => $category_wise_asset
+        ]);
+    }
+
     public function create(Request $request)
     {
         

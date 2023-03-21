@@ -107,6 +107,7 @@ Route::group(
             Route::group(['prefix' => 'asset'], function () {
                 Route::get('/index', 'Management\AssetsController@index');
                 Route::get('/dashboard_stats', 'Management\AssetsController@dashboard_stats');
+                Route::get('/category_wise_stats', 'Management\AssetsController@category_wise_stats');
                 Route::get('/getSubCategory', 'Management\AssetsController@getSubCategory');
                 Route::get('/single', 'Management\AssetsController@get_single_asset');
                 Route::post('/create', 'Management\AssetsController@create');

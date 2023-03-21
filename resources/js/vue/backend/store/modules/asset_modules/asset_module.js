@@ -4,7 +4,8 @@ import axios from 'axios';
 const state = {
     data: {},
     single_data: {},
-    dashboard_stats: {}
+    dashboard_stats: {},
+    category_wise_stats: {}
 }
 
 // get state
@@ -12,6 +13,7 @@ const getters = {
     get_asset_data: state => state.data,
     get_asset_single_data: state => state.single_data,
     get_asset_stats: state => state.dashboard_stats,
+    get_category_wise_stats: state => state.category_wise_stats,
 }
 
 // actions
@@ -33,6 +35,12 @@ const actions = {
         await axios.get('/asset/dashboard_stats')
         .then((res) => {
             this.commit('set_dashboard_stats', res.data.stats);
+        })
+    },
+    fetch_category_wise_stats: async function(state) {
+        await axios.get('/asset/category_wise_stats')
+        .then((res) => {
+            this.commit('set_category_wise_stats', res.data.category_wise_asset);
         })
     },
     fetch_asset_single: async function(state, id) {
@@ -105,6 +113,9 @@ const mutations = {
     },
     set_dashboard_stats: function (state, data) {
         state.dashboard_stats = data;
+    },
+    set_category_wise_stats: function (state, data) {
+        state.category_wise_stats = data;
     },
     set_asset_single: function(state, data) {
         state.single_data = data;

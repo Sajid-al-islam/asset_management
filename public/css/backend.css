@@ -127,6 +127,18 @@ ul li, ol li {
     -webkit-box-shadow: none;
             box-shadow: none;
   }
+  nav {
+    display: none !important;
+  }
+  .main-menu {
+    display: none !important;
+  }
+  #header-title {
+    display: none !important;
+  }
+  #print_card_header {
+    display: none !important;
+  }
   .watch {
     display: none !important;
   }

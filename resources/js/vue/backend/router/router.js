@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import Layout from '../views/Layout'
 import Dashboard from '../views/Dashboard'
 import Report from '../views/Report'
+import MonthlyReport from '../views/MonthlyReport'
 import Login from '../views/auth/Login'
 
 // Profile routes
@@ -83,6 +84,11 @@ const routes = [{
                 path: '/report',
                 name: 'Report',
                 component: Report,
+            },
+            {
+                path: '/monthly-report',
+                name: 'MonthlyReport',
+                component: MonthlyReport,
             },
             {
                 path: 'setting',

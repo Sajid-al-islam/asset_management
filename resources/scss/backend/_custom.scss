@@ -82,6 +82,7 @@ ul li, ol li {
     cursor: pointer;
 }
 @media print {
+
     #print_body {
         position: fixed;
         width: 100vw;
@@ -91,6 +92,18 @@ ul li, ol li {
         padding: 0;
         z-index: 9999;
         box-shadow: none;
+    }
+    nav {
+        display: none !important;
+    }
+    .main-menu {
+        display: none !important;
+    }
+    #header-title {
+        display: none !important;
+    }
+    #print_card_header {
+        display: none !important;
     }
     .watch {
         display: none !important;

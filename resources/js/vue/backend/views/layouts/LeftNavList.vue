@@ -16,12 +16,33 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item">
+
+            <li class="nav-item has-sub">
+                <a class="d-flex align-items-center" href="#">
+                    <i data-feather="activity"></i>
+                    <span class="menu-title text-truncate" data-i18n="Dashboards">Reports</span>
+                </a>
+                <ul class="menu-content">
+                    <li>
+                        <router-link :to="{name:'Report'}" class="d-flex align-items-center" href="#">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Profile">Report</span>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name:'MonthlyReport'}" class="d-flex align-items-center" href="#">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Profile">Monthly report</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </li>
+            <!-- <li class="nav-item">
                 <router-link :to="{name:'Report'}" class="d-flex align-items-center" href="#">
                     <i data-feather="activity"></i>
                     <span class="menu-item text-truncate" data-i18n="Profile">Report</span>
                 </router-link>
-            </li>
+            </li> -->
             <li class="navigation-header">
                 <span data-i18n="Apps &amp; Pages">Pages</span>
                 <i data-feather="more-horizontal"></i>
