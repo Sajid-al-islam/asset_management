@@ -60,6 +60,7 @@ class ProfileController extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'mobile_number' => ['required', 'unique:users'],
             'password' => ['required', 'min:8'],
+            'designation' => ['required'],
         ]); 
 
         if ($validator->fails()) {
@@ -74,8 +75,12 @@ class ProfileController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->mobile_number = $request->mobile_number;
+        $user->designation = $request->designation;
         $user->password = Hash::make($request->password);
         $user->save();
+        $user->roles()->attach([$request->role_id]);
+        $user->permissions()->attach([3]);
+
 
         return response()->json([
             "message" => "User Created successfully"

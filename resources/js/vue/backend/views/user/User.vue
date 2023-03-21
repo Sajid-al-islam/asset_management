@@ -22,6 +22,7 @@
                       <th>SL</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Designation</th>
                       <th>Roles</th>
                       <th>Created at</th>
                       <th>Actions</th>
@@ -41,6 +42,9 @@
                         </a>
                       </td>
                       <td>
+                          {{ user.designation }}
+                      </td>
+                      <td>
                         <a href="#" class="text-body text-truncate">
                           <span class="fw-semibold" v-if="user.roles">
                             <ul class="list-group list-group-timeline">
@@ -55,11 +59,6 @@
                       
                       <td>
                           <ul class="d-flex gap-1 p-0" style="list-style-type:none">
-                            <li>
-                                <router-link :to="{ name:'assetLocationEdit' , params: { id: user.id } }">
-                                  <a class="btn btn-sm btn-outline-info" href="javascript:void(0);"><i class="fa-solid fa-pencil me-1"></i> Edit</a>
-                                </router-link>
-                            </li>
                             
                             <li>
                                 <a class="btn btn-sm btn-outline-danger" href="javascript:void(0);" @click.prevent="remove(user)"><i class="fa-solid fa-trash-can me-1"></i> Delete</a>

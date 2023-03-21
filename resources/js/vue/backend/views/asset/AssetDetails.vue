@@ -14,63 +14,53 @@
                                 
                                 <div class="mb-xl-0 mb-4">
                                     <div class="d-flex svg-illustration mb-4 gap-2 align-items-center">
-                                        <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                fill-rule="evenodd"
-                                                clip-rule="evenodd"
-                                                d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                                                fill="#7367F0"
-                                            ></path>
-                                            <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd" d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616"></path>
-                                            <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd" d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616"></path>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z" fill="#7367F0"></path>
-                                        </svg>
-
-                                        <span class="app-brand-text fw-bold fs-4">
-                                            {{ asset.name }}
+                                        <span class="fw-bold fs-4 ms-0">
+                                            Asset Name: {{ asset.name }}
                                         </span>
                                     </div>
-                                    <p class="mb-2"><b>V no: </b>{{ asset.v_no }}</p>
-                                    <p class="mb-2"><b>SV no: </b>{{ asset.sv_no }}</p>
+                                    <p class="mb-2"><span><b>Asset Code: </b></span>{{ asset.code }}</p>
+                                    <p class="mb-2"><span><b>V no: </b></span>{{ asset.v_no }}</p>
+                                    <p class="mb-2"><span><b>SV no: </b></span>{{ asset.sv_no }}</p>
+                                    <p class="mb-2"><span><b>Category: </b></span>{{ asset.category.name }}</p>
+                                    <p class="mb-2"><span><b>Sub Category: </b></span>{{ asset.sub_category.name }}</p>
+                                    
+                                    <p class="mb-2"><span><b>Location: </b></span>{{ asset.location }}</p>
                                     <!-- <p class="mb-0">+1 (123) 456 7891, +44 (876) 543 2198</p> -->
-                                </div>
-                                <div>
-                                    <h4 class="fw-semibold mb-2">Code: {{ asset.code }}</h4>
-                                    <div class="mb-2 pt-1">
-                                        <span><b>Hand Over date:</b></span>
-                                        <span v-if="asset.hand_over" class="fw-semibold">{{ asset.hand_over[1] }}</span>
-                                    </div>
-                                    <div class="pt-1">
-                                        <span><b>Location: </b></span>
-                                        <span class="fw-semibold">{{ asset.location }}</span>
-                                    </div>
-                                    <div class="pt-1">
-                                        <span><b>Transfered to: </b></span>
-                                        <span class="fw-semibold" v-if="asset.user">{{ asset.user.first_name }} {{ asset.user.last_name }}</span>
-                                    </div>
-
-                                    <div class="pt-1">
-                                        <span><b>Mobile no: </b></span>
-                                        <span class="fw-semibold" v-if="asset.user">{{ asset.designation_mobile_number }}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- <hr class="my-0" /> -->
                         <div class="divider">
                             <div class="divider-text">
-                                <h4>Details:</h4>
+                                <h4>User Details:</h4>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row p-sm-3 p-0">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4 mx-auto">
+                                <div class="pt-1">
+                                    <span><b>Name of user: </b></span>
+                                    <span class="fw-semibold" v-if="asset.user">{{ asset.user.first_name }} {{ asset.user.last_name }}</span>
+                                </div>
+                                <div class="mb-2 pt-1">
+                                    <span><b>Hand Over date:</b></span>
+                                    <span v-if="asset.hand_over" class="fw-semibold">{{ asset.hand_over[1] }}</span>
+                                </div>
+                                <div class="pt-1">
+                                    <span><b>Mobile no: </b></span>
+                                    <span class="fw-semibold" v-if="asset.user">{{ asset.designation_mobile_number }}</span>
+                                </div>
+                                <div class="pt-1">
+                                    <span><b>Current status: </b></span>
+                                    <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
+                                    <span v-else class="badge bg-label-danger me-1">Lost</span>
+                                </div>
+                                <!-- <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4 mx-auto">
                                     <h4 class="mb-3">Description:</h4>
                                     <p>{{ asset.description }}</p>
-                                </div>
+                                </div> -->
                                 
                                     <ul>
-                                        <li class="d-flex gap-2">
+                                        <!-- <li class="d-flex gap-2">
                                             <h5 class="mb-0">
                                                     <span class="badge bg-label-primary p-2 rounded">
                                                         <i class="fa-solid fa-list-check"></i>
@@ -88,8 +78,8 @@
                                             Sub Category: 
                                             </h5>
                                             <p class="mb-0">{{ asset.sub_category.name }}</p>
-                                        </li>
-                                        <li class="d-flex align-items-center gap-2 my-2" v-if="asset.sub_category">
+                                        </li> -->
+                                        <!-- <li class="d-flex align-items-center gap-2 my-2" v-if="asset.sub_category">
                                             <h5 class="mb-0">
                                                 <span class="badge bg-label-primary p-2 rounded">
                                                     <i class="fa-solid fa-list-check"></i>
@@ -98,7 +88,7 @@
                                             </h5>
                                             <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
                                             <span v-else class="badge bg-label-danger me-1">Lost</span>
-                                        </li>
+                                        </li> -->
                                         
                                         <span v-if="asset.asset_lost">
                                             <li class="d-flex align-items-center gap-2 my-2">
@@ -144,10 +134,9 @@
                                         <th>Name</th>
                                         <th>Price</th>
                                         <th>Current Value</th>
+                                        <th>Depreciation amount</th>
                                         <th>Buying location</th>
                                         <th>Buying location contact</th>
-                                        <th>V no</th>
-                                        <th>Sv no</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,10 +144,9 @@
                                         <td class="fw-bold">{{ asset.name }}</td>
                                         <td class="fw-bold">{{ asset.price }}</td>
                                         <td><span v-if="asset.depreciated_price">{{ asset.depreciated_price }}</span></td>
+                                        <td><span>{{ asset.depreciation_amount }}</span></td>
                                         <td><span v-if="asset.buy_location">{{ asset.buy_location.name }}, {{ asset.buy_location.address }}</span></td>
                                         <td><span v-if="asset.buy_location">{{ asset.buy_location.mobile_number }}</span></td>
-                                        <td>{{ asset.v_no }}</td>
-                                        <td>{{ asset.sv_no }}</td>
                                     </tr>
                                 </tbody>
                             </table>

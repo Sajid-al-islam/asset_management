@@ -110,9 +110,11 @@ ul li, ol li {
     }
     .divider {
         margin: 0px !important;
+        padding: 0px !important;
     }
     .card-body {
-        padding-top: 10px !important;
+        padding: 10px !important;
+        margin: 0px !important;
     }
     .signature_single_form {
         margin-top: 30px !important;

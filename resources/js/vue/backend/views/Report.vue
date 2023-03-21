@@ -3,18 +3,13 @@
         <div class="row">
             <!-- Invoice repeater -->
             <div class="col-12">
-                
-
                 <div class="card mb-5">
                     <div class="card-header d-flex flex-wrap g-2">
                         <div class="header d-block">
                             <h5 class="card-title mb-0">Asset Reports Filter</h5>
                         </div>
-                        
                         <button class="btn btn-sm btn-primary" @click="exportCSV()">Export to csv</button>
-                        
                     </div>
-                    
                     <div class="card-body table-responsive">
                         <div class="filter-area mb-4">
                             <div class="d-flex justify-content-between">
@@ -76,6 +71,7 @@
                                     <th>SV no</th>
                                     <th>Location of asset</th>
                                     <th>Name of user</th>
+                                    <th>Designation of user</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -87,14 +83,14 @@
                                     <td>
                                         <span class="fw-semibold">{{ asset.name }}</span>
                                     </td>
-                                    <td v-if="asset.buy_location">{{ asset.buy_location.name }}</td>
-                                    <td v-else></td>
+                                    <td>{{ asset.buy_location ? asset.buy_location.name : "" }}</td>
                                     <td>{{ asset.price }}</td>
                                     <td>{{ asset.depreciated_price }}</td>
                                     <td>{{ asset.v_no }}</td>
                                     <td>{{ asset.sv_no }}</td>
                                     <td>{{ asset.location }}</td>
-                                    <td>{{ asset.user.first_name }} {{ asset.user.last_name }}</td>
+                                    <td>{{ asset.user ? asset.user.first_name : " " }} {{ asset.user ? asset.user.last_name : " " }}</td>
+                                    <td>{{ asset.user ? asset.user.designation : " " }}</td>
                                     <td>
                                         <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
                                         <span v-else class="badge bg-label-danger me-1">Lost</span>
@@ -115,7 +111,6 @@
                                                 <a class="btn btn-sm btn-outline-danger" href="javascript:void(0);" @click.prevent="remove(asset)"><i class="fa-solid fa-trash-can me-1"></i> Delete</a>
                                             </li>
                                         </ul>
-                                            
                                     </td>
                                 </tr>
                             </tbody>

@@ -32,6 +32,10 @@
                                 <input type="text" name="mobile_number" class="form-control" id="basic-default-fullname" placeholder="0175*******">
                             </div>
                             <div class="mb-3">
+                                <label class="form-label" for="basic-default-fullname">Designation</label>
+                                <input type="text" name="designation" class="form-control" id="basic-default-fullname" placeholder="Graphics Desginer">
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label" for="multicol-username"><h5>Roles</h5></label>
                                 <select id="select2Basic"  class="roles form-select">
                                     <option v-for="(role, index) in get_user_roles" :value="role.id" :key="index">{{ role.name }}</option>
