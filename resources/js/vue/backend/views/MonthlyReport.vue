@@ -12,6 +12,10 @@
                     </div>
                     <div class="card-body" id="print_body">
                         <div class="row">
+                            <h2 class="d-none print_header text-center">Tech Park IT</h2>
+                            <p class="d-none print_header text-center">House-31, Lane-01,Block-B,Section-06, Mirpur, Dhaka</p>
+                            <p class="d-none print_header text-center">Mobile: 01719229595, www.techparkit.org</p>
+                            <h2 class="d-none print_header text-center">Categorywise Asset Statistics </h2>
                             <table class="table">
                                 <thead>
                                     <tr>

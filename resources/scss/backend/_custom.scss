@@ -96,6 +96,12 @@ ul li, ol li {
     nav {
         display: none !important;
     }
+    .print_header {
+        margin-top: 5px !important;
+        margin-bottom: 0px !important;
+        padding: 0px !important;
+        display: block !important;
+    }
     .main-menu {
         display: none !important;
     }
@@ -118,8 +124,12 @@ ul li, ol li {
         display: none !important;
     }
     .spec {
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+    .user_details {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
     }
     .divider {
         margin: 0px !important;

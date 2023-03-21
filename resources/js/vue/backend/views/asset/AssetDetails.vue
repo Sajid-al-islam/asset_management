@@ -10,8 +10,10 @@
                 <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
                     <div class="card invoice-preview-card" id="print_body">
                         <div class="card-body">
+                            <h2 class="d-none print_header text-center">Tech Park IT</h2>
+                            <p class="d-none print_header text-center">House-31, Lane-01,Block-B,Section-06, Mirpur, Dhaka</p>
+                            <p class="d-none print_header text-center">Mobile: 01719229595, www.techparkit.org</p>
                             <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
-                                
                                 <div class="mb-xl-0 mb-4">
                                     <div class="d-flex svg-illustration mb-4 gap-2 align-items-center">
                                         <span class="fw-bold fs-4 ms-0">
@@ -30,103 +32,106 @@
                             </div>
                         </div>
                         <!-- <hr class="my-0" /> -->
-                        <div class="divider">
-                            <div class="divider-text">
-                                <h4>User Details:</h4>
+                        <div class="user_details">
+                            <div class="divider">
+                                <div class="divider-text">
+                                    <h4>User Details:</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row p-sm-3 p-0">
-                                <div class="pt-1">
-                                    <span><b>Name of user: </b></span>
-                                    <span class="fw-semibold" v-if="asset.user">{{ asset.user.first_name }} {{ asset.user.last_name }}</span>
-                                </div>
-                                <div class="mb-2 pt-1">
-                                    <span><b>Hand Over date:</b></span>
-                                    <span v-if="asset.hand_over" class="fw-semibold">{{ asset.hand_over[1] }}</span>
-                                </div>
-                                <div class="pt-1">
-                                    <span><b>Mobile no: </b></span>
-                                    <span class="fw-semibold" v-if="asset.user">{{ asset.designation_mobile_number }}</span>
-                                </div>
-                                <div class="pt-1">
-                                    <span><b>Current status: </b></span>
-                                    <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
-                                    <span v-else class="badge bg-label-danger me-1">Lost</span>
-                                </div>
-                                <!-- <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4 mx-auto">
-                                    <h4 class="mb-3">Description:</h4>
-                                    <p>{{ asset.description }}</p>
-                                </div> -->
-                                
-                                    <ul>
-                                        <!-- <li class="d-flex gap-2">
-                                            <h5 class="mb-0">
+                            <div class="card-body">
+                                <div class="row p-sm-3 p-0">
+                                    <div class="pt-1">
+                                        <span><b>Name of user: </b></span>
+                                        <span class="fw-semibold" v-if="asset.user">{{ asset.user.first_name }} {{ asset.user.last_name }}</span>
+                                    </div>
+                                    <div class="mb-2 pt-1">
+                                        <span><b>Hand Over date:</b></span>
+                                        <span v-if="asset.hand_over" class="fw-semibold">{{ asset.hand_over[1] }}</span>
+                                    </div>
+                                    <div class="pt-1">
+                                        <span><b>Mobile no: </b></span>
+                                        <span class="fw-semibold" v-if="asset.user">{{ asset.designation_mobile_number }}</span>
+                                    </div>
+                                    <div class="pt-1">
+                                        <span><b>Current status: </b></span>
+                                        <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
+                                        <span v-else class="badge bg-label-danger me-1">Lost</span>
+                                    </div>
+                                    <!-- <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-xl-0 mb-md-4 mb-sm-0 mb-4 mx-auto">
+                                        <h4 class="mb-3">Description:</h4>
+                                        <p>{{ asset.description }}</p>
+                                    </div> -->
+                                    
+                                        <ul>
+                                            <!-- <li class="d-flex gap-2">
+                                                <h5 class="mb-0">
+                                                        <span class="badge bg-label-primary p-2 rounded">
+                                                            <i class="fa-solid fa-list-check"></i>
+                                                        </span>
+                                                    Category: 
+                                                </h5>
+                                                <p v-if="asset.category" class="mb-0">{{ asset.category.name }}</p>
+                                                
+                                            </li>
+                                            <li class="d-flex gap-2 my-2" v-if="asset.sub_category">
+                                                <h5 class="mb-0">
                                                     <span class="badge bg-label-primary p-2 rounded">
                                                         <i class="fa-solid fa-list-check"></i>
                                                     </span>
-                                                Category: 
-                                            </h5>
-                                            <p v-if="asset.category" class="mb-0">{{ asset.category.name }}</p>
+                                                Sub Category: 
+                                                </h5>
+                                                <p class="mb-0">{{ asset.sub_category.name }}</p>
+                                            </li> -->
+                                            <!-- <li class="d-flex align-items-center gap-2 my-2" v-if="asset.sub_category">
+                                                <h5 class="mb-0">
+                                                    <span class="badge bg-label-primary p-2 rounded">
+                                                        <i class="fa-solid fa-list-check"></i>
+                                                    </span>
+                                                    Current status:  
+                                                </h5>
+                                                <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
+                                                <span v-else class="badge bg-label-danger me-1">Lost</span>
+                                            </li> -->
                                             
-                                        </li>
-                                        <li class="d-flex gap-2 my-2" v-if="asset.sub_category">
-                                            <h5 class="mb-0">
-                                                <span class="badge bg-label-primary p-2 rounded">
-                                                    <i class="fa-solid fa-list-check"></i>
-                                                </span>
-                                            Sub Category: 
-                                            </h5>
-                                            <p class="mb-0">{{ asset.sub_category.name }}</p>
-                                        </li> -->
-                                        <!-- <li class="d-flex align-items-center gap-2 my-2" v-if="asset.sub_category">
-                                            <h5 class="mb-0">
-                                                <span class="badge bg-label-primary p-2 rounded">
-                                                    <i class="fa-solid fa-list-check"></i>
-                                                </span>
-                                                Current status:  
-                                            </h5>
-                                            <span v-if="asset.is_lost == 0" class="badge bg-label-success me-1">Available</span>
-                                            <span v-else class="badge bg-label-danger me-1">Lost</span>
-                                        </li> -->
+                                            <span v-if="asset.asset_lost">
+                                                <li class="d-flex align-items-center gap-2 my-2">
+                                                    <h5 v-if="asset.sub_category" class="mb-0">
+                                                        <span class="badge bg-label-primary p-2 rounded">
+                                                            <i class="fa-solid fa-list-check"></i>
+                                                        </span>
+                                                        Lost Date:  
+                                                    </h5>
+                                                    <p class="mb-0">{{ asset.asset_lost.lost_date }}</p>
+                                                </li>
+                                                <li class="d-flex align-items-center gap-2 my-2">
+                                                    <h5 v-if="asset.sub_category" class="mb-0">
+                                                        <span class="badge bg-label-primary p-2 rounded">
+                                                            <i class="fa-solid fa-list-check"></i>
+                                                        </span>
+                                                        Lost Description:  
+                                                    </h5>
+                                                    <p class="mb-0">{{ asset.asset_lost.lost_reason }}</p>
+                                                </li>
+                                            </span>
+                                            
+                                        </ul>
+                                            
                                         
-                                        <span v-if="asset.asset_lost">
-                                            <li class="d-flex align-items-center gap-2 my-2">
-                                                <h5 v-if="asset.sub_category" class="mb-0">
-                                                    <span class="badge bg-label-primary p-2 rounded">
-                                                        <i class="fa-solid fa-list-check"></i>
-                                                    </span>
-                                                    Lost Date:  
-                                                </h5>
-                                                <p class="mb-0">{{ asset.asset_lost.lost_date }}</p>
-                                            </li>
-                                            <li class="d-flex align-items-center gap-2 my-2">
-                                                <h5 v-if="asset.sub_category" class="mb-0">
-                                                    <span class="badge bg-label-primary p-2 rounded">
-                                                        <i class="fa-solid fa-list-check"></i>
-                                                    </span>
-                                                    Lost Description:  
-                                                </h5>
-                                                <p class="mb-0">{{ asset.asset_lost.lost_reason }}</p>
-                                            </li>
-                                        </span>
-                                        
-                                    </ul>
+    
                                         
                                     
-
-                                    
-                                
-                                <!-- <div class="col-xl-6 col-md-6 col-sm-7 col-6">
-                                    <h5 class="mt-2">Category:</h5>
-                                    <button type="button" class="btn btn-outline-primary waves-effect">{{ asset.category.name }}</button>
+                                    <!-- <div class="col-xl-6 col-md-6 col-sm-7 col-6">
+                                        <h5 class="mt-2">Category:</h5>
+                                        <button type="button" class="btn btn-outline-primary waves-effect">{{ asset.category.name }}</button>
+                                    </div>
+                                    <div class="col-xl-6 col-md-6 col-sm-7 col-6">
+                                        <h5 class="mt-2">Sub Category:</h5>
+                                        <button type="button" class="btn btn-outline-primary waves-effect">{{ asset.sub_category.name }}</button>
+                                    </div> -->
                                 </div>
-                                <div class="col-xl-6 col-md-6 col-sm-7 col-6">
-                                    <h5 class="mt-2">Sub Category:</h5>
-                                    <button type="button" class="btn btn-outline-primary waves-effect">{{ asset.sub_category.name }}</button>
-                                </div> -->
                             </div>
                         </div>
+
                         <div class="table-responsive border-top">
                             <table class="table m-0">
                                 <thead>
@@ -195,7 +200,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0 signature_div">
+                        <div class="d-flex d-none signature_div justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
                             <div class="mt-5 signature_single_form">
                                 <p class="signature_asset">Receiver Signature</p>
                             </div>
