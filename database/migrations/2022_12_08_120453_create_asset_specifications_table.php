@@ -18,6 +18,7 @@ class CreateAssetSpecificationsTable extends Migration
             $table->bigInteger('asset_id')->nullable();
             $table->string('title',300)->nullable();
             $table->text('value')->nullable();
+            $table->double('price')->nullable();
             $table->string('creator',100)->nullable();
             $table->timestamps();
         });

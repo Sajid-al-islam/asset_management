@@ -16,6 +16,7 @@ class Assets extends Model
         'date',
         'hand_over',
         'warrenty_date_fromated',
+        'buying_date_fromated',
         'updated_current_value',
         'depreciated_price',
     ];
@@ -117,6 +118,11 @@ class Assets extends Model
     public function getWarrentyDateFromatedAttribute() {
         return [
             Carbon::parse($this->warrenty_date)->format('Y-m-d'),
+        ];
+    }
+    public function getBuyingDateFromatedAttribute() {
+        return [
+            Carbon::parse($this->buying_date)->format('Y-m-d'),
         ];
     }
 }

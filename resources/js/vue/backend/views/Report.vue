@@ -79,7 +79,7 @@
                             <tbody v-if="get_asset_data.assets" class="table-border-bottom-0">
                                 <tr v-for="(asset, index) in get_asset_data.assets.data" :key="index">
                                     <td><strong style="color: #7367f0;">#{{ index+1 }}</strong></td>
-                                    <td>{{ asset.buying_date }}</td>
+                                    <td>{{ asset.buying_date_fromated[0] }}</td>
                                     <td>
                                         <span class="fw-semibold">{{ asset.name }}</span>
                                     </td>

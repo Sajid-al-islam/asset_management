@@ -180,6 +180,7 @@
                                             <th>SL</th>
                                             <th>Title</th>
                                             <th>Desciption</th>
+                                            <th>price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -187,6 +188,7 @@
                                             <td class="fw-bold">{{ index+1 }}</td>
                                             <td class="fw-bold">{{ asset_spec.title }}</td>
                                             <td>{{ asset_spec.value }}</td>
+                                            <td>{{ asset_spec.price }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -40,6 +40,10 @@
                             <option v-for="(sub_category, index) in selected_sub_cats" :value="sub_category.id" :key="index">{{ sub_category.name }}</option>
                         </select>
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="multicol-username"><h5>Buying Date</h5></label>
+                        <input name="buying_date" type="date" :value="asset.buying_date_fromated[0]" class="form-control" placeholder="YYYY-MM-DD" />
+                    </div>
                 </div>
                 <hr class="my-4 mx-n4" />
                 <!-- <h6>2. Personal Info</h6> -->
@@ -171,13 +175,18 @@
                         <label class="form-label" for="collapsible-address"><h5>Specification</h5></label>
                         <div class="d-flex border rounded position-relative pe-0 mt-2" v-for="(input,index) in asset_specifications" :key="index">
                             <div class="row w-100 p-3">
-                                <div class="col-md-5 col-12 mb-md-0 mb-3">
+                                <div class="col-md-4 col-12 mb-md-0 mb-3">
                                     <p class="mb-2 repeater-title">Title</p>
                                     <input type="text" v-model="input.title" class="form-control invoice-item-price mb-3" placeholder="model" />
                                 </div>
-                                <div class="col-md-5 col-12 mb-md-0 mb-3">
+                                <div class="col-md-4 col-12 mb-md-0 mb-3">
                                     <p class="mb-2 repeater-title">Description</p>
                                         <input type="text" v-model="input.value" class="form-control invoice-item-price mb-3" placeholder="inspiration 3000" />
+                                    <div></div>
+                                </div>
+                                <div class="col-md-2 col-12 mb-md-0 mb-3">
+                                    <p class="mb-2 repeater-title">price</p>
+                                        <input type="text" v-model="input.price" class="form-control invoice-item-price mb-3" placeholder="10000" />
                                     <div></div>
                                 </div>
                                 <div class="col-md-2 col-6">
@@ -219,7 +228,8 @@ export default {
             asset_specifications: [
                 {
                     title: "",
-                    value: ""
+                    value: "",
+                    price: ""
                 }
             ],
             img_url: null,
@@ -412,7 +422,8 @@ export default {
         addSpecification() {
             this.asset_specifications.push({
                 title: "",
-                value: ""
+                value: "",
+                price: ""
             })
         },
 

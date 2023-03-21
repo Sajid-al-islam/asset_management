@@ -263,6 +263,7 @@ class AssetsController extends Controller
                 $asset_specification->asset_id = $asset->id;
                 $asset_specification->title = $value->title;
                 $asset_specification->value = $value->description;
+                $asset_specification->price = $value->price;
                 $asset_specification->creator = $user_id;
                 $asset_specification->save();
             }
@@ -452,6 +453,7 @@ class AssetsController extends Controller
                 $asset_specification->asset_id = $asset->id;
                 $asset_specification->title = $value->title;
                 $asset_specification->value = $value->value;
+                $asset_specification->price = $value->price;
                 $asset_specification->creator = $user_id;
                 $asset_specification->save();
             }
